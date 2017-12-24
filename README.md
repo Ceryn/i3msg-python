@@ -13,7 +13,7 @@ Installation
 ---
 i3msg is on [PyPi](https://pypi.python.org/pypi/i3msg):
 ```Bash
-pip install i3msg
+sudo pip install i3msg
 ```
 
 Alternatively, you can download and put it where you need it:
