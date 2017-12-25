@@ -13,13 +13,13 @@ Installation
 ---
 i3msg is on [PyPi](https://pypi.python.org/pypi/i3msg):
 ```Bash
-sudo pip install i3msg
+pip install i3msg --user
 ```
 
 Alternatively, you can download and put it where you need it:
 ```Bash
 cd /path/to/dependent/script.py
-wget https://github.com/ceryn/i3msg-python/i3msg.py
+wget https://raw.githubusercontent.com/Ceryn/i3msg-python/master/i3msg.py
 touch __init__.py
 ```
 
