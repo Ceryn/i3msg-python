@@ -4,8 +4,8 @@ import socket, subprocess, struct, json, threading
 
 MSGS = ['RUN_COMMAND', 'GET_WORKSPACES', 'SUBSCRIBE', 'GET_OUTPUTS', 'GET_TREE', 'GET_MARKS', 'GET_BAR_CONFIG', 'GET_VERSION', 'GET_BINDING_MODES', 'GET_CONFIG']
 EVENTS = ['workspace', 'output', 'mode', 'window', 'barconfig_update', 'binding', 'shutdown']
-for k, v in zip(MSGS, range(len(MSGS))) + zip(EVENTS, range(len(EVENTS))):
-    vars()[k] = v
+for i, v in list(enumerate(MSGS)) + list(enumerate(EVENTS)):
+    vars()[v] = i
 
 def encode(n, msg=''):
     return 'i3-ipc' + struct.pack('I', len(msg)) + struct.pack('I', n) + msg
