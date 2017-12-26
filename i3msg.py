@@ -8,14 +8,13 @@ for i, v in enumerate(MSGS):
     vars()[v] = i
 for i, v in enumerate(EVENTS):
     vars()[v] = i
-i3sock = None
+i3sockpath = None
 
-def get_i3sock():
-    global i3sock
-    if i3sock is None:
-        i3sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        i3sock.connect(subprocess.check_output(['i3', '--get-socketpath']).strip())
-    return i3sock
+def get_i3sockpath():
+    global i3sockpath
+    if i3sockpath is None:
+        i3sockpath = subprocess.check_output(['i3', '--get-socketpath']).strip()
+    return i3sockpath
 
 def encode(n, msg=''):
     return 'i3-ipc' + struct.pack('I', len(msg)) + struct.pack('I', n) + msg
@@ -32,9 +31,11 @@ def recvall(s):
     return event, data
 
 def send(n, msg=''):
-    s = get_i3sock()
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect(get_i3sockpath())
     s.send(encode(n, str(msg)))
     _, data = recvall(s)
+    s.close()
     return json.loads(data)
 
 def handle_subscription(s, handler):
@@ -43,7 +44,8 @@ def handle_subscription(s, handler):
         handler(event, json.loads(data))
 
 def subscribe(events, handler):
-    s = get_i3sock()
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect(get_i3sockpath())
     s.send(encode(SUBSCRIBE, json.dumps(events)))
     _, data = recvall(s)
     data = json.loads(data)
