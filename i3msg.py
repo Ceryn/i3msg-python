@@ -17,7 +17,10 @@ def get_i3sockpath():
     return i3sockpath
 
 def encode(n, msg=''):
-    return 'i3-ipc' + struct.pack('I', len(msg)) + struct.pack('I', n) + msg
+    return b"".join([str.encode('i3-ipc'), 
+        struct.pack('I', len(msg)),
+        struct.pack('I', n), 
+        str.encode(msg)])
 
 def decode(blob):
     size = int(struct.unpack('I', blob[ 6:10])[0])
